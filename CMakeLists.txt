@@ -255,13 +255,11 @@ install(FILES ${GENDIR}/src/UHDM.capnp
 install(
   EXPORT uhdmTargets
   FILE uhdmTargets.cmake
-  NAMESPACE uhdm::
   DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/cmake/uhdm
 )
 # Support use directly in build tree
 export(EXPORT uhdmTargets
   FILE "${CMAKE_CURRENT_BINARY_DIR}/cmake/uhdmTargets.cmake"
-  NAMESPACE uhdm::
 )
 include(CMakePackageConfigHelpers)
 configure_package_config_file(uhdmConfig.cmake.in
