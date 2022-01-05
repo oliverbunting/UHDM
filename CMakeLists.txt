@@ -244,9 +244,32 @@ target_link_libraries(test_inst PRIVATE
 # Installation target
 install(
   TARGETS uhdm capnp kj uhdm-dump uhdm-hier
+  EXPORT uhdmTargets
   ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/uhdm
   PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_PREFIX}/include/uhdm)
 install(DIRECTORY ${GENDIR}/uhdm/
         DESTINATION ${CMAKE_INSTALL_PREFIX}/include/uhdm/)
 install(FILES ${GENDIR}/src/UHDM.capnp
         DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/uhdm)
+# Export targets to install path
+install(
+  EXPORT uhdmTargets
+  FILE uhdmTargets.cmake
+  NAMESPACE uhdm::
+  DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/cmake/uhdm
+)
+# Support use directly in build tree
+export(EXPORT uhdmTargets
+  FILE "${CMAKE_CURRENT_BINARY_DIR}/cmake/uhdmTargets.cmake"
+  NAMESPACE uhdm::
+)
+include(CMakePackageConfigHelpers)
+configure_package_config_file(uhdmConfig.cmake.in
+  ${CMAKE_CURRENT_BINARY_DIR}/uhdmConfig.cmake
+  INSTALL_DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/cmake/uhdm
+)
+install(
+  FILES
+    ${CMAKE_CURRENT_BINARY_DIR}/uhdmConfig.cmake
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/cmake/uhdm
+)
